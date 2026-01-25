@@ -92,11 +92,3 @@ Khet2.0/
 ├── package.json
 └── README.md
 ```
-
----
-
-## Contact
-For questions or contributions, please contact:
-- Farouk Ben Taleb - [email]
-- [Member 2] - [email]
-- [Member 3] - [email]
