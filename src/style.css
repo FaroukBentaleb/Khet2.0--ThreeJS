@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    background: #2C2C34;
+}
+
+canvas {
+    display: block;
+}
+
+#game-ui {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #DDDCC5;
+    font-family: Arial, sans-serif;
+    background: rgba(13, 13, 13, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    min-width: 250px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(77, 87, 102, 0.5);
+}
+
+#game-ui h2 {
+    margin: 0 0 15px 0;
+    color: #E94B3C;
+    font-size: 24px;
+    border-bottom: 2px solid #A41E34;
+    padding-bottom: 10px;
+}
+
+#game-ui p {
+    margin: 5px 0;
+}
+
+#game-ui strong {
+    color: #AAAFBA;
+}
+
+#turn-info {
+    background: rgba(61, 68, 81, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#action-info {
+    background: rgba(164, 30, 52, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #E94B3C;
+}
+
+#controls {
+    margin-top: 15px;
+    border-top: 1px solid #4D5766;
+    padding-top: 10px;
+}
+
+#controls p {
+    font-size: 12px;
+    margin: 3px 0;
+    color: #C5C3D8;
+}
+
+#reserve-info {
+    margin-top: 10px;
+    border-top: 1px solid #4D5766;
+    padding-top: 10px;
+}
+
+#current-player {
+    color: #E94B3C;
+    font-weight: bold;
+}
+
+#selected-piece {
+    color: #C5C3D8;
+}
+
+button {
+    font-family: 'Arial', sans-serif;
+}
+
+button:hover:not(:disabled) {
+    filter: brightness(1.2);
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.98);
+}

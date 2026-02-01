@@ -1,3 +1,7 @@
-import { khetGame } from "./khet";
+import { KhetGame } from "./KhetGame.js";
 
-const game = new khetGame();
+// Initialize the game when the page loads
+const game = new KhetGame();
+
+// Make it available globally for debugging
+window.game = game;
