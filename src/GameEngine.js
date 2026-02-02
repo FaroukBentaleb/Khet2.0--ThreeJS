@@ -5,7 +5,8 @@ function createPlayer(id) {
       sphinx: null,
       pharaoh: null,
       anubis: [],
-      scarab: null
+      scarab: null,
+      pyramids: []  // Track placed pyramids
     },
     reserve: {
       pyramids: 7,

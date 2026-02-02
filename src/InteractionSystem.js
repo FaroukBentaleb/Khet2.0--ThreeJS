@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { LaserSystem } from './LaserSystem';
 
 export class InteractionSystem {
     constructor(khetGame) {
@@ -12,6 +13,9 @@ export class InteractionSystem {
         this.selectedMesh = null;
         this.arrowHelpers = [];
         this.rotationIndicators = [];
+        
+        // Initialize laser system
+        this.laserSystem = new LaserSystem(khetGame);
         
         // Raycaster for mouse picking
         this.raycaster = new THREE.Raycaster();
@@ -478,18 +482,55 @@ export class InteractionSystem {
     }
 
     endTurn() {
-        // Fire laser (placeholder)
-        console.log(`Player ${this.game.currentPlayer}'s Sphinx fires!`);
-
-        // Switch player
-        this.game.currentPlayer = this.game.currentPlayer === 1 ? 2 : 1;
-        this.game.turnCount++;
-
-        console.log(`Turn ${this.game.turnCount}: Player ${this.game.currentPlayer}'s turn`);
+        // Process cooldowns for current player
+        this.processCooldowns();
         
-        // Update UI if controller exists
-        if (this.khetGame.controller) {
-            this.khetGame.controller.updateUI();
+        // Fire laser
+        this.laserSystem.fireLaser();
+
+        // Switch player after laser finishes (laser system is async)
+        setTimeout(() => {
+            this.game.currentPlayer = this.game.currentPlayer === 1 ? 2 : 1;
+            
+            // Only increment turn counter when player 1's turn starts (both players have played)
+            if (this.game.currentPlayer === 1) {
+                this.game.turnCount++;
+            }
+
+            console.log(`Turn ${this.game.turnCount}: Player ${this.game.currentPlayer}'s turn`);
+            
+            // Update UI if controller exists
+            if (this.khetGame.controller) {
+                this.khetGame.controller.updateUI();
+            }
+        }, 1500); // Wait for laser animation to complete
+    }
+
+    processCooldowns() {
+        const currentPlayer = this.game.players[`p${this.game.currentPlayer}`];
+        
+        // Process pyramid cooldowns
+        const readyPyramids = [];
+        currentPlayer.reserve.cooldown = currentPlayer.reserve.cooldown.filter(item => {
+            item.turnsRemaining--;
+            if (item.turnsRemaining <= 0) {
+                readyPyramids.push(item);
+                return false;
+            }
+            return true;
+        });
+        
+        // Add ready pyramids to reserve
+        readyPyramids.forEach(item => {
+            if (item.type === 'PYRAMID') {
+                currentPlayer.reserve.pyramids++;
+                console.log(`Player ${this.game.currentPlayer} receives a pyramid from destroyed opponent piece`);
+            }
+        });
+        
+        // Process swap cooldowns
+        if (this.khetGame.scarabSwapSystem) {
+            this.khetGame.scarabSwapSystem.processCooldowns();
         }
     }
 
@@ -503,6 +544,9 @@ export class InteractionSystem {
             if (player.pieces.scarab?.mesh3D) meshes.push(player.pieces.scarab.mesh3D);
             for (const anubis of player.pieces.anubis) {
                 if (anubis.mesh3D) meshes.push(anubis.mesh3D);
+            }
+            for (const pyramid of player.pieces.pyramids) {
+                if (pyramid.mesh3D) meshes.push(pyramid.mesh3D);
             }
         }
         
@@ -518,6 +562,9 @@ export class InteractionSystem {
             if (player.pieces.scarab?.mesh3D === mesh) return player.pieces.scarab;
             for (const anubis of player.pieces.anubis) {
                 if (anubis.mesh3D === mesh) return anubis;
+            }
+            for (const pyramid of player.pieces.pyramids) {
+                if (pyramid.mesh3D === mesh) return pyramid;
             }
         }
         

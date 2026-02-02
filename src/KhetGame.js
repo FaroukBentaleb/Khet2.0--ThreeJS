@@ -8,6 +8,7 @@ import { Pyramid } from './pieces/Pyramid';
 import { initializeGame } from './GameEngine';
 import { InteractionSystem } from './InteractionSystem';
 import { PyramidPlacement } from './PyramidPlacement';
+import { ScarabSwapSystem } from './ScarabSwapSystem';
 
 export class KhetGame {
     constructor() {
@@ -107,6 +108,7 @@ export class KhetGame {
         //-----------------Interaction System & Pyramid Placement
         this.interactionSystem = new InteractionSystem(this);
         this.pyramidPlacement = new PyramidPlacement(this, this.interactionSystem);
+        this.scarabSwapSystem = new ScarabSwapSystem(this, this.interactionSystem);
         
         // Create simple UI
         this.createUI();

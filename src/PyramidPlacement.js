@@ -238,6 +238,9 @@ export class PyramidPlacement {
         this.scene.add(pyramidMesh.mesh);
         pyramid.mesh3D = pyramidMesh.mesh;
 
+        // Add to player's pyramids list
+        currentPlayer.pieces.pyramids.push(pyramid);
+
         // Decrease reserve
         currentPlayer.reserve.pyramids--;
 
